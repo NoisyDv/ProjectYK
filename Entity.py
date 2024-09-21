@@ -1,5 +1,6 @@
 
 import pygame
+import math
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -11,18 +12,27 @@ class Player(pygame.sprite.Sprite):
         self.walkF=[pygame.transform.flip(i,True,False) for i in self.walk]
         self.animation=self.idle
         self.count=0
-        self.image=self.animation[int(self.count)]
-        self.rect=self.image.get_rect(topleft=(0,0))
         self.pos=[0,0]
+        self.image=self.animation[int(self.count)]
+        self.rect=pygame.rect.Rect(self.pos[0],self.pos[1],28,63)
+        self.Hp_value=80
+       
         self.velocity_x=0
         self.velocity_y=0
         self.filp=None
+
     def update(self,screen):
+        self.rect.topleft=[self.pos[0]+26,self.pos[1]+9]
+        self.Hp_bar=pygame.rect.Rect(self.pos[0],self.pos[1],80,10)
+        self.Hp_bar2=pygame.rect.Rect(self.pos[0],self.pos[1],self.Hp_value,10)
         self.count+=0.2
         if self.count>=len(self.animation):
             self.count=0
         self.image=self.animation[int(self.count)]
         screen.blit(self.image,self.pos)
+        pygame.draw.rect(screen,(255,255,255),self.Hp_bar)
+        pygame.draw.rect(screen,(255,0,0,),self.Hp_bar2)
+        self.P_move()
     def P_move(self):
         self.pos[1]+=self.velocity_y
         self.pos[0]+=self.velocity_x
@@ -53,3 +63,6 @@ class Player(pygame.sprite.Sprite):
               self.animation=self.walk
              else:self.animation=self.walkF
         else:self.velocity_y=0    
+          
+
+   
