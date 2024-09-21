@@ -9,10 +9,11 @@ class game:
         
     def game_loop(self):
         while True:
-            self.screen.fill((0,125,125))
+            self.screen.fill((125,125,150))
             pygame.draw.rect(self.screen,(250,10,20),self.reg)
             pygame.draw.rect(self.screen,(200,200,200),self.hah)
             pygame.draw.rect(self.screen,(20,0,0),self.hah)
+            pygame.draw.rect(self.screen,(0,0,0,),self.hah)
             for event in pygame.event.get():
                 if event.type==pygame.QUIT:
                     pygame.quit()
