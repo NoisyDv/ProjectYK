@@ -1,26 +1,28 @@
 
 import pygame
-import math
+#class Player 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
+        #โหลด ภาพ animation ต่างๆ ของ player
         self.idle=[pygame.image.load(f'animation/idle/idle-{i}.png') for i in range(1,7)]
         self.idle=[pygame.transform.scale(i,(80,80)) for i in self.idle]
         self.idleF=[pygame.transform.flip(i,True,False)for i in self.idle]
         self.walk=[pygame.image.load(f'animation/walk/walk-{i}.png') for i in range(1,7)]
         self.walk=[pygame.transform.scale(i,(80,80)) for i in self.walk]
         self.walkF=[pygame.transform.flip(i,True,False) for i in self.walk]
+        #ตัวแปรและสถานะต่างของplayer
         self.animation=self.idle
         self.count=0
-        self.pos=[0,0]
+        self.pos=[500-28,400-63]
         self.image=self.animation[int(self.count)]
         self.rect=pygame.rect.Rect(self.pos[0],self.pos[1],28,63)
         self.Hp_value=80
-       
         self.velocity_x=0
         self.velocity_y=0
         self.filp=None
 
+#method การเปลี่ยนแปลงต่างๆของplayer
     def update(self,screen):
         self.rect.topleft=[self.pos[0]+26,self.pos[1]+9]
         self.Hp_bar=pygame.rect.Rect(self.pos[0],self.pos[1],80,10)
@@ -33,9 +35,11 @@ class Player(pygame.sprite.Sprite):
         pygame.draw.rect(screen,(255,255,255),self.Hp_bar)
         pygame.draw.rect(screen,(255,0,0,),self.Hp_bar2)
         self.P_move()
+#method สำหรับเปลี่ยนแปลงต่ำแหน่งของplayer
     def P_move(self):
         self.pos[1]+=self.velocity_y
         self.pos[0]+=self.velocity_x
+        #กำหนด keys สำหรับ event การเคลื่อนที่
         key=pygame.key.get_pressed()
         if key[pygame.K_d]:
           self.velocity_x=5

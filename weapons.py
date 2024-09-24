@@ -1,8 +1,9 @@
 import pygame
 import math
-from Entity import Player
 
+#class Gun สำหรับปืน
 class Gun(pygame.sprite.Sprite):
+   #constuctor หรับต่ำแหน่งที่สัมพัทกับPlayer
    def __init__(self,pos):
     super().__init__()
     self.pos=pos
@@ -11,26 +12,28 @@ class Gun(pygame.sprite.Sprite):
     self.corsorx,self.corsory=pygame.mouse.get_pos()
     self.bullets=[]
     self.shot=True
+    self.bullet_velocity=20
+#method สำหรับจัดการปืน
    def gun_use(self,screen):
-       
-       self.corsorx,self.corsory=pygame.mouse.get_pos()
-       self.x=self.corsorx-(self.pos[0])
-       self.y=self.corsory-(self.pos[1])
-       self.angle=math.degrees(math.atan2(-self.y,self.x))
-       self.gun_rotate=pygame.transform.rotate(self.gun,self.angle)
+       #ต้องการให้ภาพของปื่นหมุน
+       self.corsorx,self.corsory=pygame.mouse.get_pos()#รับต่ำแห่งของcorsor mouse
+       self.x=self.corsorx-(self.pos[0])#ผลต่างระหว่างตำแหน่งของplayer กับ corsor mouse แกนx
+       self.y=self.corsory-(self.pos[1])#ผลต่างระหว่างตำแหน่งของplayer กับ corsor mouse แกนy
+       self.angle=math.degrees(math.atan2(-self.y,self.x))#หามุมโดยใช้ฟังชันก์ arc tangent
+       self.gun_rotate=pygame.transform.rotate(self.gun,self.angle)#ให้หมุนไปตามมุมที่เปลี่ยนแปลง
        gun_rect = self.gun_rotate.get_rect(topleft=(self.pos[0]-5, self.pos[1]))
-       
        screen.blit(self.gun_rotate,gun_rect.topleft)
-       print(self.corsorx,self.corsory,self.pos[0],self.pos[1])
+       
+#method สำหรับกำหนด ค่าต่างของกระสุน
    def bullet_action(self) :
          
          if self.shot:
           bulletx,bullety=self.pos[0]+80,self.pos[1]+30
           bullet_angle=math.atan2(self.y,self.x)
-          bullet_velocity=5
-          bulllet_changex=math.cos(bullet_angle)*bullet_velocity
-          bullet_changey=math.sin(bullet_angle)*bullet_velocity
+          bulllet_changex=math.cos(bullet_angle)*self.bullet_velocity
+          bullet_changey=math.sin(bullet_angle)*self.bullet_velocity
           self.bullets.append([bulletx,bullety,bulllet_changex,bullet_changey])
+#method สำหรับเปลี่ยนตำแหน่งของกระสุน
    def move_bullets(self,screen):
        for i in self.bullets:
            i[0]+=i[2]
